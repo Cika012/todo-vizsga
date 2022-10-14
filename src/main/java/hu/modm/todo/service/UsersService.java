@@ -2,6 +2,7 @@ package hu.modm.todo.service;
 
 import hu.modm.todo.dto.CreateUserCommand;
 import hu.modm.todo.dto.UserDto;
+import hu.modm.todo.repository.UserNotFoundException;
 import hu.modm.todo.repository.UsersRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,4 +21,9 @@ public class UsersService {
         return userMapper.toDto(user);
     }
 
+    public UserDto findUserById(long id) {
+        return userMapper.toDto(repository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
+    }
 }

@@ -22,7 +22,6 @@ public class ToDosRepositoryIT {
     UsersRepository usersRepository;
 
 
-
     @Test
      void createToDo() {
         var user = new User("sample@test.com");
