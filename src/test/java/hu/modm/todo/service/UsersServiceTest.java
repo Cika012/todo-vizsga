@@ -1,23 +1,23 @@
 package hu.modm.todo.service;
 
 import hu.modm.todo.dto.CreateUserCommand;
+import hu.modm.todo.dto.UserDto;
 import hu.modm.todo.entity.User;
 import hu.modm.todo.repository.UsersRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.notNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UsersServiceTest {
 
-    @Autowired
+    @Mock
     UserMapper mapper;
 
     @Mock
@@ -28,14 +28,22 @@ class UsersServiceTest {
 
     @Test
     void createUserTest() {
-        var createUserCommand = new CreateUserCommand("sample@email.com");
+        long expectedId = 1;
+        String expectedEmail = "sample@email.com";
 
-        Mockito.when(usersRepository.save((User)notNull())).thenAnswer(i -> {
-            ((User)i.getArguments()[0]).setId((long)1);
+        var createUserCommand = new CreateUserCommand(expectedEmail);
+
+        when(mapper.toEntity(any(CreateUserCommand.class))).thenAnswer(x->new User(null, ((CreateUserCommand)x.getArguments()[0]).getEmail()));
+        when(mapper.toDto(any(User.class))).thenAnswer(x->new UserDto(((User)x.getArguments()[0]).getId(), ((User)x.getArguments()[0]).getEmail()));
+
+        when(usersRepository.save(any(User.class))).thenAnswer(i -> {
+            ((User)i.getArguments()[0]).setId(expectedId);
             return i.getArguments()[0];
             }
         );
         var userDto = service.createUser(createUserCommand);
 
+        assertEquals(expectedId, userDto.getId());
+        assertEquals(expectedEmail, userDto.getEmail());
     }
 }
