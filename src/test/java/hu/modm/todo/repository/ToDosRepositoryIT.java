@@ -25,7 +25,7 @@ public class ToDosRepositoryIT {
 
     @Test
      void createToDo() {
-        var user = new User(null, "sample@test.com");
+        var user = new User("sample@test.com");
         usersRepository.save(user);
 
         String expectedDescription = "create integration test";

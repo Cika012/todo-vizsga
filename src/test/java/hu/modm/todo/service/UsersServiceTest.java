@@ -33,8 +33,8 @@ class UsersServiceTest {
 
         var createUserCommand = new CreateUserCommand(expectedEmail);
 
-        when(mapper.toEntity(any(CreateUserCommand.class))).thenAnswer(x->new User(null, ((CreateUserCommand)x.getArguments()[0]).getEmail()));
-        when(mapper.toDto(any(User.class))).thenAnswer(x->new UserDto(((User)x.getArguments()[0]).getId(), ((User)x.getArguments()[0]).getEmail()));
+        when(mapper.toEntity(any(CreateUserCommand.class))).thenAnswer(x->new User(((CreateUserCommand)x.getArguments()[0]).getEmail()));
+        when(mapper.toDto(any(User.class))).thenAnswer(x->new UserDto(((User)x.getArguments()[0]).getId(), ((User)x.getArguments()[0]).getEmail(),  null));
 
         when(usersRepository.save(any(User.class))).thenAnswer(i -> {
             ((User)i.getArguments()[0]).setId(expectedId);
