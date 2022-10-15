@@ -4,6 +4,7 @@ import hu.modm.todo.dto.CreateTodoCommand;
 import hu.modm.todo.dto.CreateUserCommand;
 import hu.modm.todo.dto.ToDoDto;
 import hu.modm.todo.dto.UserDto;
+import hu.modm.todo.entity.enums.Status;
 import hu.modm.todo.service.ToDosService;
 import hu.modm.todo.service.UsersService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -43,5 +47,13 @@ public class UserController {
         return ResponseEntity
                 .created(uri.path("/api/users/{userId}/todo/{todoId}").buildAndExpand(userId, toDoDto.getId()).toUri())
                 .body(toDoDto);
+    }
+
+    @GetMapping("{userId}/todos")
+    public List<ToDoDto> getToDos(@PathVariable("userId") long id, @RequestParam("status") Optional<Status> status) {
+        var toDoList =  toDosService.getTodosOfUser(id, status);
+        if(toDoList == null) return new ArrayList<>();
+        else
+            return toDoList;
     }
 }

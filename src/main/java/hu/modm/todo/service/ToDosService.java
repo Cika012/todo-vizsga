@@ -13,6 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
 @Slf4j
 @AllArgsConstructor
 @Service
@@ -36,5 +40,23 @@ public class ToDosService {
         todoEntity.setStatus(command.getStatus());
         toDosRepository.save(todoEntity);
         return toDoMapper.toDto(todoEntity);
+    }
+
+    @Transactional
+    public List<ToDoDto> getTodosOfUser(long userId, Optional<Status> status){
+        usersRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found with id: "+userId));
+
+        List<ToDoDto> list;
+
+        if(status.isPresent()){
+            list = toDoMapper.toDto(toDosRepository.getToDosOfUserWithStatus(userId, status.get()));
+        }
+        else{
+            list = toDoMapper.toDto(toDosRepository.getToDosOfUser(userId));
+        }
+
+        return list.stream().sorted(Comparator.comparingInt(x -> ((ToDoDto)x).getImportance().getValue()).reversed()).toList();
+
+
     }
 }

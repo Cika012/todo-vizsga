@@ -18,7 +18,7 @@ public class User {
     @Column(name = "user_email", unique = true)
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<ToDo> todos;
 
     public User(String email) {
