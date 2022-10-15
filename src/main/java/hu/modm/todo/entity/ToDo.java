@@ -18,9 +18,7 @@ public class ToDo {
     private Long id;
     private String description;
     private LocalDate deadline;
-    @Enumerated(EnumType.ORDINAL)
     private Importance importance;
-    @Enumerated(EnumType.ORDINAL)
     private Status status;
 
     @ToString.Exclude

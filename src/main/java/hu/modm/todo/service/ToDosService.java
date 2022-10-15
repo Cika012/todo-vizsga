@@ -1,8 +1,10 @@
 package hu.modm.todo.service;
 
+import hu.modm.todo.dto.ChangeStatusCommand;
 import hu.modm.todo.dto.CreateTodoCommand;
 import hu.modm.todo.dto.ToDoDto;
 import hu.modm.todo.entity.enums.Status;
+import hu.modm.todo.repository.ToDoNotFoundException;
 import hu.modm.todo.repository.ToDosRepository;
 import hu.modm.todo.repository.UserNotFoundException;
 import hu.modm.todo.repository.UsersRepository;
@@ -27,5 +29,12 @@ public class ToDosService {
         todo.setUser(user);
         toDosRepository.save(todo);
         return toDoMapper.toDto(todo);
+    }
+
+    public ToDoDto changeStatus(long todoId, ChangeStatusCommand command) {
+        var todoEntity = toDosRepository.findById(todoId).orElseThrow(()->new ToDoNotFoundException("ToDo not found with id: " + todoId));
+        todoEntity.setStatus(command.getStatus());
+        toDosRepository.save(todoEntity);
+        return toDoMapper.toDto(todoEntity);
     }
 }
