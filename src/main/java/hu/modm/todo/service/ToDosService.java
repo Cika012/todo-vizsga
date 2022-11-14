@@ -28,7 +28,6 @@ public class ToDosService {
     @Transactional
     public ToDoDto createTodo(long userId, CreateTodoCommand command){
         var todo = toDoMapper.toEntity(command);
-        todo.setStatus(Status.NOT_STARTED);
         var user = usersRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
         todo.setUser(user);
         toDosRepository.save(todo);

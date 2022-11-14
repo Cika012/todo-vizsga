@@ -19,3 +19,4 @@ services:
       - todolist-mariadb
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mariadb://todolist-mariadb:3306/todolist'
+    #command: ["../wait-for-it.sh", "-t", "10", "todolist-mariadb:3306", "--java", "org.springframework.boot.loader.JarLauncher"]

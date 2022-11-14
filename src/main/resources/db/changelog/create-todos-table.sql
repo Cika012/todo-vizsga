@@ -2,8 +2,8 @@ create table todos (
                        id bigint auto_increment,
                        description varchar(255),
                        deadline date,
-                       importance int default(1),
-                       status int default(1),
+                       importance varchar(20),
+                       status varchar(20),
                        user_id bigint not null,
                        primary key (id)
 );

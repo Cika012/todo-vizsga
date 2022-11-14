@@ -18,8 +18,10 @@ public class ToDo {
     private Long id;
     private String description;
     private LocalDate deadline;
+    @Enumerated(EnumType.STRING)
     private Importance importance;
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.NOT_STARTED;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

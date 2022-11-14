@@ -5,7 +5,7 @@ public enum Status {
     WORKING_ON_IT(2),
     NOT_STARTED(1);
 
-    private int value;
+    private final int value;
 
     private Status(int value) {
         this.value = value;

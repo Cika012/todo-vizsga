@@ -5,7 +5,7 @@ public enum Importance {
     IMPORTANT(2),
     NON_URGENT(1);
 
-    private int value;
+    private final int value;
 
     private Importance(int value) {
         this.value = value;
